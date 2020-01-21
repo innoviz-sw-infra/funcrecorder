@@ -3,8 +3,11 @@ import json
 from doing import Doingdo
 from recorder import RecorderFunc, RecorderClass, RecordMode
 import recorder as rec
+from get_config import get_config
 
 __CONFIG_PATH__ = 'config.local.json'
+
+config = get_config(__CONFIG_PATH__)
 
 
 @RecorderFunc
@@ -14,16 +17,15 @@ def something(ret):
 
 
 def func2():
-        wow = something(['5', '3', 'shahar'])
+        wow = something(['aaa', 4, 'Morag'])
         print("******************")
         print(wow)
 
 def test_set_record_mode():
     rec.set_mode(RecordMode.RECORD)
-
     mode = rec.get_mode()
+    assert mode == RecordMode.NONE
 
-    assert mode == RecordMode.RECORD
 
 class Run:
 
@@ -35,9 +37,10 @@ class Run:
 
 
 if __name__=="__main__":
-    # Run().func()
-    #
-    # RecorderFunc.__is_record__ = 2
-    #
-    test_set_record_mode()
+
+    rec.set_mode(config.is_record)
+    Run().func()
+
+    # rec.__is_record__ = config.is_record
     # func2()
+
